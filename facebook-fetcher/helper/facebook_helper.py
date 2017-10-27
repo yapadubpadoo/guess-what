@@ -1,5 +1,6 @@
 import facebook
 import arrow
+import pprint
 from . import log_helper
 
 fb_logger = log_helper.get_logger('facebook-helper')
@@ -63,14 +64,16 @@ def get_comments(graph, post_id):
     fields = fields + ',reactions.type(HAHA).summary(total_count).limit(0).as(haha)'
     fields = fields + ',reactions.type(SAD).summary(total_count).limit(0).as(sad)'
     fields = fields + ',reactions.type(ANGRY).summary(total_count).limit(0).as(angry)'
-    fields = fields + ',permalink_url,attachment&filter=stream&order=reverse_chronological'
+    fields = fields + ',permalink_url,attachment'
     comments = []
     response = graph.get_object(
-        id=post_id + '/reactions',
+        id=post_id + '/comments',
         fields=fields,
-        after=after,
-        limit=COMMENTS_LIMIT_PER_PAGE
+        limit=COMMENTS_LIMIT_PER_PAGE,
+        filter="stream",
+        order="reverse_chronological",
     )
+    # pprint.pprint(response)
     comments = response['data']
     fb_logger.debug('Comments of post_id {}, comments length = {}'.format(
         post_id, 
@@ -83,8 +86,10 @@ def get_comments(graph, post_id):
             id=post_id + '/reactions',
             fields=fields,
             after=after,
-            limit=COMMENTS_LIMIT_PER_PAGE
+            limit=COMMENTS_LIMIT_PER_PAGE,
+            filter="stream",
+            order="reverse_chronological",
         )
         fb_logger.debug('    Length = '.format(len(response['data'])))
         comments = comments + response['data']
-    return response
+    return comments

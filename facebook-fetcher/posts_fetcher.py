@@ -10,7 +10,7 @@ from helper import rabbitmq_helper as rabbit
 from helper import mongo_helper as mongodb
 from pymongo.errors import DuplicateKeyError
 
-logger = log_helper.get_logger('facebook-fetcher')
+logger = log_helper.get_logger('facebook-posts-fetcher')
 
 QUEUE_EXCHANGE = "fb:posts"
 LOWER_POST_DATE = arrow.get('2017-08-31 17:00:00', 'YYYY-MM-DD HH:mm:ss')
