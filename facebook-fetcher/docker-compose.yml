@@ -1,0 +1,13 @@
+version: '2'
+services:
+  rabbitmq:
+    image: rabbitmq:3.6-management
+    container_name: guess-what-rabbit
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: "guess-what"
+      RABBITMQ_DEFAULT_PASS: "what?????"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    restart: on-failure
