@@ -34,7 +34,7 @@ queue_channel.queue_declare(queue='fb:post:get-comments', durable=True)
 # bind queues to an exchange
 queue_channel.queue_bind(
     exchange=QUEUE_EXCHANGE,
-    queue="fb:post::get-reactions",
+    queue="fb:post:get-reactions",
 )
 queue_channel.queue_bind(
     exchange=QUEUE_EXCHANGE,

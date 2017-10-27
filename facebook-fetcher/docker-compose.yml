@@ -10,4 +10,11 @@ services:
       RABBITMQ_DEFAULT_USER: "guess-what"
       RABBITMQ_DEFAULT_PASS: "what?????"
       RABBITMQ_DEFAULT_VHOST: "/"
-    restart: on-failure
+    restart: always
+
+  mongodb:
+    image: mongo:3.4
+    container_name: guess-what-mongodb
+    ports:
+      - 27017:27017
+    restart: always

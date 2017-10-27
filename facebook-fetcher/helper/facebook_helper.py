@@ -12,6 +12,7 @@ https://graph.facebook.com/v2.10/204234332938286_1891024787592557/reactions?acce
 '''
 
 POSTS_LIMIT_PER_PAGE = 100
+COMMENTS_LIMIT_PER_PAGE=1000
 REACTION_LIMIT_PER_PAGE = 5000
 FIELDS_OF_POST="name,id,created_time,updated_time,message,message_tags,reactions"
 
@@ -52,3 +53,38 @@ def get_all_reactions(graph, post_id, after):
         )
         fb_logger.debug('    Length = '.format(len(response['data'])))
     return all_reactions
+
+def get_comments(graph, post_id):
+    fields = 'id,message,created_time,message_tags,application,from,parent,comments.summary(true).limit(0)';
+    fields = fields + ',reactions.type(NONE).summary(total_count).limit(0).as(reactions_all)'
+    fields = fields + ',reactions.type(LIKE).summary(total_count).limit(0).as(like)'
+    fields = fields + ',reactions.type(LOVE).summary(total_count).limit(0).as(love)'
+    fields = fields + ',reactions.type(WOW).summary(total_count).limit(0).as(wow)'
+    fields = fields + ',reactions.type(HAHA).summary(total_count).limit(0).as(haha)'
+    fields = fields + ',reactions.type(SAD).summary(total_count).limit(0).as(sad)'
+    fields = fields + ',reactions.type(ANGRY).summary(total_count).limit(0).as(angry)'
+    fields = fields + ',permalink_url,attachment&filter=stream&order=reverse_chronological'
+    comments = []
+    response = graph.get_object(
+        id=post_id + '/reactions',
+        fields=fields,
+        after=after,
+        limit=COMMENTS_LIMIT_PER_PAGE
+    )
+    comments = response['data']
+    fb_logger.debug('Comments of post_id {}, comments length = {}'.format(
+        post_id, 
+        len(response['data']))
+    )
+    while len(response['data']) >= COMMENTS_LIMIT_PER_PAGE:
+        fb_logger.debug('    Get next after {}'.format(response['paging']['cursors']['after']))
+        after = response['paging']['cursors']['after']
+        response = graph.get_object(
+            id=post_id + '/reactions',
+            fields=fields,
+            after=after,
+            limit=COMMENTS_LIMIT_PER_PAGE
+        )
+        fb_logger.debug('    Length = '.format(len(response['data'])))
+        comments = comments + response['data']
+    return response
