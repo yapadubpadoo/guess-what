@@ -7,6 +7,8 @@ import pprint
 from helper import facebook_helper as fb
 from helper import log_helper
 from helper import rabbitmq_helper as rabbit
+from helper import mongo_helper as mongodb
+
 logger = log_helper.get_logger('facebook-fetcher')
 
 QUEUE_EXCHANGE = "fb:posts"
@@ -15,6 +17,11 @@ UPPER_POST_DATE = arrow.get('2017-10-01 17:00:00', 'YYYY-MM-DD HH:mm:ss')
 
 config = configparser.ConfigParser()
 config.read('config/production.ini')
+
+mongo_client = mongodb.get_mongo_client(
+    host=config['mongodb']['host']
+    port=config['mongodb']['port']
+)
 
 queue_channel = rabbit.get_rabbit_channel(
     user=config['rabbitmq']['user'],
