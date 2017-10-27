@@ -8,6 +8,7 @@ from helper import facebook_helper as fb
 from helper import log_helper
 from helper import rabbitmq_helper as rabbit
 from helper import mongo_helper as mongodb
+from pymongo.errors import DuplicateKeyError
 
 logger = log_helper.get_logger('facebook-fetcher')
 
@@ -19,9 +20,10 @@ config = configparser.ConfigParser()
 config.read('config/production.ini')
 
 mongo_client = mongodb.get_mongo_client(
-    host=config['mongodb']['host']
-    port=config['mongodb']['port']
+    host=config['mongodb']['host'],
+    port=int(config['mongodb']['port'])
 )
+posts_collection = mongo_client.guess_what_facebook.posts
 
 queue_channel = rabbit.get_rabbit_channel(
     user=config['rabbitmq']['user'],
@@ -41,7 +43,7 @@ queue_channel.queue_declare(queue='fb:post:get-comments', durable=True)
 # bind queues to an exchange
 queue_channel.queue_bind(
     exchange=QUEUE_EXCHANGE,
-    queue="fb:post:get-reactions",
+    queue="fb:post::get-reactions",
 )
 queue_channel.queue_bind(
     exchange=QUEUE_EXCHANGE,
@@ -77,19 +79,23 @@ while fetch_next_page:
                 post_created_time
             ))
         else:
-            logger.info('[+] Send post to queue, post_id = {}, created_time = {}'.format(
+            # insert post to db
+            logger.info('[+] Insert post to DB, post_id = {}, created_time = {}'.format(
                 post_id, 
                 post_created_time
             ))
-            # logger.info('Getting reactions of post_id = {}, created_time {}'.format(
-            #     post_id,
-            #     post_created_time
-            #     ))
-            # if len(post['reactions']['data']) > 0:
-            #     all_reactions = get_all_reactions(
-            #         post_id=post_id, 
-            #         after=post['reactions']['paging']['cursors']['after']
-            #     )
+            post['_id'] = post['id']
+            try:
+                post_id = posts_collection.insert_one(post).inserted_id 
+            except DuplicateKeyError:
+                pass
+
+            logger.info('[++] Send post to queue, post_id = {}, created_time = {}'.format(
+                post_id, 
+                post_created_time
+            ))
+            
+            # send to queue
             queue_channel.basic_publish(
                 exchange=QUEUE_EXCHANGE,
                 routing_key='',
@@ -113,4 +119,6 @@ while fetch_next_page:
         logger.info('*** Last post of this page is older than {}'.format(LOWER_POST_DATE))
         logger.info('*** OK, done')
         fetch_next_page = False
+
+    print("")
     
