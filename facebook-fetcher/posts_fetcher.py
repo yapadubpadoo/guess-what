@@ -19,10 +19,7 @@ UPPER_POST_DATE = arrow.get('2017-10-01 17:00:00', 'YYYY-MM-DD HH:mm:ss')
 config = configparser.ConfigParser()
 config.read('config/production.ini')
 
-mongo_client = mongodb.get_mongo_client(
-    host=config['mongodb']['host'],
-    port=int(config['mongodb']['port'])
-)
+mongo_client = mongodb.get_mongo_client(config['mongodb']['uri'])
 posts_collection = mongo_client.guess_what_facebook.posts
 
 queue_channel = rabbit.get_rabbit_channel(
