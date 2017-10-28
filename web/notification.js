@@ -25,10 +25,10 @@ redisClient.subscribe('new-case');
 
 redisClient.on("message", function(channel, message) {
   try {
+    console.log(message);
     var data = JSON.parse(message);
-    console.log(data);
     // io.to("1").emit("1", data);
-    io.emit('new_case', data);
+    io.emit('new_case', data.data);
   } catch(err) {
     console.log(err);
   }
