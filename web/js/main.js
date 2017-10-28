@@ -71,7 +71,7 @@ var main = new Vue({
   methods: {
     getThread: function (id) {
       console.log(id)
-      this.$http.get('js/thread.json').then((response) => {
+      this.$http.get('js/thread'+id+'.json').then((response) => {
         this.thread = response.body
       });
     }
