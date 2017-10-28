@@ -82,7 +82,7 @@ def handle_data(data):
                 sentiment = 'positive'
                 sentiment_priority = 50
             else:
-                sentiment = 'other'
+                sentiment = 'neutral'
                 sentiment_priority = 1
             ticket['sentiment'] = sentiment
             ticket['sentiment_priority'] = sentiment_priority
@@ -128,7 +128,15 @@ def fb_realtime_updates():
 
 @app.route('/tickets', methods=['GET'])
 def get_tickets():
-    tickets = tickets_collection.find({}).sort([('tag_priority', -1), ('sentiment_priority', -1), ('created_time', 1)])
+    tickets = tickets_collection.find(
+        {"sender_name":{"$ne":"Guesswhattelecom"}}
+    ).sort(
+        [
+            ('tag_priority', -1), 
+            ('sentiment_priority', -1), 
+            ('created_time', 1)
+        ]
+    )
     result = []
     for ticket in tickets:
         ticket['created_time'] = arrow.get(ticket['created_time']).to('Asia/Bangkok').format('YYYY-MM-DD HH:mm:ss')
