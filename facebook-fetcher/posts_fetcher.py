@@ -120,6 +120,7 @@ def callback(ch, method, properties, body):
             logger.info('*** Last post of this page is older than {}'.format(LOWER_POST_DATE))
             logger.info('*** OK, done')
             fetch_next_page = False
+            ch.basic_ack(delivery_tag = method.delivery_tag)
 
         print("")
 
