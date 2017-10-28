@@ -43,7 +43,7 @@ Vue.component('reply-item', {
   '
 })
 
-var main = new Vue({
+var app = new Vue({
   el: '#main',
   data: {
     page: {
@@ -60,15 +60,26 @@ var main = new Vue({
       this.active_case_id = id
       this.main_is_loading = true
       this.thread = null
-      this.$http.get('http://35.164.146.20:6032/ticket/'+id).then((response) => {
+      this.$http.get('http://35.164.146.20:6031/ticket/'+id).then((response) => {
         this.thread = response.body.data
         this.main_is_loading = false
       });
     }
   },
+  computed: {
+    orderedCases: function () {
+      return _.orderBy(this.cases, ['tag_priority', 'sentiment_priority', 'created_time'], ['desc', 'desc', 'asc'])
+    }
+  },
   created: function () {
-    this.$http.get('http://35.164.146.20:6032/tickets').then((response) => {
+    this.$http.get('http://35.164.146.20:6031/tickets').then((response) => {
       this.cases = response.body.data
     });
   },
+})
+
+var socket = io.connect('ws://127.0.0.1:8890');
+socket.on('new_case', function(data) {
+  console.log(data)
+  app.cases.push(data)
 })
