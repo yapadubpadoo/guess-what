@@ -13,7 +13,7 @@ def get_feature(message):
     features_result = {}
     print("  Message, " + message)
     for feature, pattern in feature_patterns.items():
-        matches = re.match(pattern, message, flags=re.MULTILINE)
+        matches = re.findall(pattern, message, flags=re.MULTILINE)
         print("     Find, " + pattern + ', matches = ' + str(matches))
         if  matches is not None:
             features_result[feature] = 1
