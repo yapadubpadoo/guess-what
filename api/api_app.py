@@ -59,7 +59,7 @@ def handle_data(data):
         # it's a comment level, ticket one
         if data['value']['parent_id'] == data['value']['post_id']:
             ticket = format_data(data)
-            tokenized_text = tokenize(ticket.message)
+            tokenized_text = tokenize(ticket['message'])
 
             if text_classification('complain', tokenized_text) == 'complain':
                 tag = 'complain'
