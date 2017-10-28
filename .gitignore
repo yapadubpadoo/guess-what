@@ -102,3 +102,4 @@ ENV/
 
 *.scssc
 node_modules
+*.csv
