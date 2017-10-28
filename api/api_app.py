@@ -10,6 +10,7 @@ from pymongo.errors import DuplicateKeyError
 import arrow
 import configparser
 import redis
+import subprocess
 
 #### to subscribe app for apge
 # curl -i -X POST \
@@ -42,6 +43,7 @@ def format_data(data):
         'parent_id': data['value']['parent_id'] \
             if 'parent_id' in data['value'] else None,
         'post_id': data['value']['post_id'],
+        'sender_profile_picture': 'https://graph.facebook.com/' + data['value']['sender_id'] + '/picture?height=32',
     }
 
 def tokenize(text):
@@ -64,7 +66,7 @@ def handle_data(data):
         # it's a comment level, ticket one
         if data['value']['parent_id'] == data['value']['post_id']:
             ticket = format_data(data)
-            tokenized_text = tokenize(ticket.message)
+            tokenized_text = tokenize(ticket['message'])
 
             if text_classification('complain', tokenized_text) == 'complain':
                 tag = 'complain'
@@ -85,25 +87,25 @@ def handle_data(data):
                 sentiment = 'positive'
                 sentiment_priority = 50
             else:
-                sentiment = 'other'
+                sentiment = 'neutral'
                 sentiment_priority = 1
             ticket['sentiment'] = sentiment
             ticket['sentiment_priority'] = sentiment_priority
 
             try:
                 inserted_id = tickets_collection.insert_one(ticket).inserted_id 
-                print("[++] Ticket ID = {} has been created".format(inserted_id))
+                pprint.pprint("[++] Ticket ID = {} has been created".format(inserted_id))
             except DuplicateKeyError:
-                print("[--] Ignore duplicated ticket ID = {}".format(ticket['_id']))
+                pprint.pprint("[--] Ignore duplicated ticket ID = {}".format(ticket['_id']))
                 pass
         # it's reply comment level
         else:
             ticke_child = format_data(data)
             try:
                 inserted_id = ticket_children_collection.insert_one(ticke_child).inserted_id 
-                print("[+++] Ticket child ID = {} has been created".format(inserted_id))
+                pprint.pprint("[+++] Ticket child ID = {} has been created".format(inserted_id))
             except DuplicateKeyError:
-                print("[---] Ignore duplicated ticket child ID = {}".format(ticke_child['_id']))
+                pprint.pprint("[---] Ignore duplicated ticket child ID = {}".format(ticke_child['_id']))
                 pass
     elif data['field'] == 'feed' \
         and data['value']['item'] == 'status'\
@@ -111,9 +113,9 @@ def handle_data(data):
         ticket_parent = format_data(data)
         try:
             inserted_id = ticket_parent_collection.insert_one(ticket_parent).inserted_id 
-            print("[+] Parent post ID = {} has been added".format(inserted_id))
+            pprint.pprint("[+] Parent post ID = {} has been added".format(inserted_id))
         except DuplicateKeyError:
-            print("[-] Ignore duplicated post ID = {}".format(ticket_parent['_id']))
+            pprint.pprint("[-] Ignore duplicated post ID = {}".format(ticket_parent['_id']))
             pass
     
 @app.route('/fb/get-updates', methods=['GET','POST'])
@@ -131,7 +133,15 @@ def fb_realtime_updates():
 
 @app.route('/tickets', methods=['GET'])
 def get_tickets():
-    tickets = tickets_collection.find({}).sort([('tag_priority', -1), ('sentiment_priority', -1), ('created_time', 1)])
+    tickets = tickets_collection.find(
+        {"sender_name":{"$ne":"Guesswhattelecom"}}
+    ).sort(
+        [
+            ('tag_priority', -1), 
+            ('sentiment_priority', -1), 
+            ('created_time', 1)
+        ]
+    )
     result = []
     for ticket in tickets:
         ticket['created_time'] = arrow.get(ticket['created_time']).to('Asia/Bangkok').format('YYYY-MM-DD HH:mm:ss')
