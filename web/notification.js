@@ -21,7 +21,7 @@ var redisClient = redis.createClient(port, ip, {no_ready_check: true});
 // redisClient.auth('axhPJvd7NKQQLNMK', function (err) {
 //   console.log(err);
 // });
-redisClient.subscribe('newcase');
+redisClient.subscribe('new-case');
 
 redisClient.on("message", function(channel, message) {
   try {

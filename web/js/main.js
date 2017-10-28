@@ -78,7 +78,7 @@ var app = new Vue({
   },
 })
 
-var socket = io.connect('ws://127.0.0.1:8890');
+var socket = io.connect('ws://35.164.146.20:8890');
 socket.on('new_case', function(data) {
   console.log(data)
   app.cases.push(data)
