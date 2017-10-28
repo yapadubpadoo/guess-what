@@ -89,18 +89,18 @@ def handle_data(data):
 
             try:
                 inserted_id = tickets_collection.insert_one(ticket).inserted_id 
-                print("[++] Ticket ID = {} has been created".format(inserted_id))
+                pprint.pprint("[++] Ticket ID = {} has been created".format(inserted_id))
             except DuplicateKeyError:
-                print("[--] Ignore duplicated ticket ID = {}".format(ticket['_id']))
+                pprint.pprint("[--] Ignore duplicated ticket ID = {}".format(ticket['_id']))
                 pass
         # it's reply comment level
         else:
             ticke_child = format_data(data)
             try:
                 inserted_id = ticket_children_collection.insert_one(ticke_child).inserted_id 
-                print("[+++] Ticket child ID = {} has been created".format(inserted_id))
+                pprint.pprint("[+++] Ticket child ID = {} has been created".format(inserted_id))
             except DuplicateKeyError:
-                print("[---] Ignore duplicated ticket child ID = {}".format(ticke_child['_id']))
+                pprint.pprint("[---] Ignore duplicated ticket child ID = {}".format(ticke_child['_id']))
                 pass
     elif data['field'] == 'feed' \
         and data['value']['item'] == 'status'\
@@ -108,9 +108,9 @@ def handle_data(data):
         ticket_parent = format_data(data)
         try:
             inserted_id = ticket_parent_collection.insert_one(ticket_parent).inserted_id 
-            print("[+] Parent post ID = {} has been added".format(inserted_id))
+            pprint.pprint("[+] Parent post ID = {} has been added".format(inserted_id))
         except DuplicateKeyError:
-            print("[-] Ignore duplicated post ID = {}".format(ticket_parent['_id']))
+            pprint.pprint("[-] Ignore duplicated post ID = {}".format(ticket_parent['_id']))
             pass
     
 @app.route('/fb/get-updates', methods=['GET','POST'])
