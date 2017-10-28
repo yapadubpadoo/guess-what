@@ -76,8 +76,8 @@ var main = new Vue({
       });
     }
   },
-  mounted: function () {
-    this.$http.get('js/cases.json').then((response) => {
+  created: function () {
+    this.$http.get('http://35.164.146.20:6032/tickets').then((response) => {
       this.cases = response.body
     });
   },

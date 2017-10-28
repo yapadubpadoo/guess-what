@@ -1,4 +1,5 @@
 from flask import Flask, redirect, url_for, session, request, jsonify
+from flask_cors import CORS, cross_origin
 import pprint
 import json
 import sys
@@ -24,6 +25,7 @@ ticket_children_collection = mongo_client.guess_what_facebook.ticket_children
 app = Flask(__name__)
 app.debug = True
 app.secret_key = "my-secret"
+CORS(app)
 
 def format_data(data):
     return {
