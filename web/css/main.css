@@ -1,0 +1,58 @@
+body {
+  height: 100vh;
+  font-family: Helvetica, sans-serif;
+  font-size: 13px;
+  color: #1d2129; }
+
+#left {
+  height: 100vh;
+  padding-top: 56px;
+  border-right: 1px solid #ddd;
+  background: #efefef;
+  padding-left: 0;
+  padding-right: 0;
+  overflow: auto; }
+  #left .case-item {
+    border-bottom: 1px solid #ddd; }
+    #left .case-item:hover {
+      transition: background-color 0.3s ease;
+      background-color: #fafafa;
+      cursor: pointer; }
+
+#right {
+  height: 100vh;
+  background: #fafafa;
+  padding: 45px;
+  padding-top: 100px;
+  overflow: auto; }
+
+.case-wrapper {
+  border: 1px solid #ddd;
+  padding-bottom: 15px; }
+
+.case-item {
+  padding: 15px; }
+  .case-item img {
+    max-width: 100%; }
+  .case-item img.mr-3 {
+    width: 32px;
+    border-radius: 32px;
+    background: gray; }
+  .case-item.post {
+    background-color: white;
+    border-bottom: 1px solid #ddd; }
+  .case-item.comment {
+    padding-bottom: 5px; }
+  .case-item.reply-comment {
+    margin-left: 50px;
+    padding-top: 5px;
+    padding-bottom: 5px; }
+  .case-item .tag {
+    margin-right: 0.5em; }
+  .case-item .author {
+    color: #365899;
+    font-weight: bold; }
+  .case-item .time-from-now {
+    color: #60646c; }
+
+/*# sourceMappingURL=main.css.map */
