@@ -95,7 +95,7 @@ def handle_data(data):
             try:
                 inserted_id = tickets_collection.insert_one(ticket).inserted_id 
                 pprint.pprint("[++] Ticket ID = {} has been created".format(inserted_id))
-                ticket['created_time'] = arrow.get(ticket['created_time']).to('Asia/Bangkok').format('YYYY-MM-DD hh:ii:ss')
+                ticket['created_time'] = arrow.get(ticket['created_time']).to('Asia/Bangkok').format('YYYY-MM-DD HH:mm:ss')
                 redis_client.publish('new-case', json.dumps({'data': ticket}))
             except DuplicateKeyError:
                 pprint.pprint("[--] Ignore duplicated ticket ID = {}".format(ticket['_id']))
