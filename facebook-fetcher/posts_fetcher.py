@@ -35,13 +35,13 @@ queue_channel.exchange_declare(
     exchange_type='fanout'
 )
 # create queues
-queue_channel.queue_declare(queue='fb:page::get-posts', durable=True)
-queue_channel.queue_declare(queue='fb:post::get-reactions', durable=True)
+queue_channel.queue_declare(queue='fb:page:get-posts', durable=True)
+queue_channel.queue_declare(queue='fb:post:get-reactions', durable=True)
 queue_channel.queue_declare(queue='fb:post:get-comments', durable=True)
 # bind queues to an exchange
 queue_channel.queue_bind(
     exchange=QUEUE_EXCHANGE,
-    queue="fb:post::get-reactions",
+    queue="fb:post:get-reactions",
 )
 queue_channel.queue_bind(
     exchange=QUEUE_EXCHANGE,
@@ -126,6 +126,6 @@ def callback(ch, method, properties, body):
 queue_channel.basic_qos(prefetch_count=1)
 queue_channel.basic_consume(
     callback,
-    queue="fb:page::get-posts",
+    queue="fb:page:get-posts",
     no_ack=False)
 queue_channel.start_consuming()
