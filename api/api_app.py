@@ -100,5 +100,5 @@ def get_ticket(_id):
         thread.append(child)
     return jsonify({"data": thread})
 
-if __name__ == '__main__':
-    app.run()
+# if __name__ == '__main__':
+#     app.run()
