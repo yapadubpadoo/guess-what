@@ -9,6 +9,7 @@ from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 import arrow
 import configparser
+import redis
 import subprocess
 
 #### to subscribe app for apge
@@ -27,6 +28,10 @@ app = Flask(__name__)
 app.debug = True
 app.secret_key = "my-secret"
 CORS(app)
+redis_client = redis.Redis(
+    host=config['redis']['host'],
+    port=config['redis']['port'], 
+    password=config['redis']['password'])
 
 def format_data(data):
     return {
