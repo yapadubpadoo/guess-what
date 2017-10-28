@@ -9,4 +9,14 @@ python gen_one_class_data.py
 cd <path to tokenize>
 python tokenize-csv.py 
 rsync -rave "ssh -i <pem file>" <local_path>/*_tokenized.csv  ubuntu@<ip>:<path>
+
+#AT SERVER
+fasttext supervised -input negative_tokenized.csv -output negative -lr 1.0 -epoch 25 -wordNgrams 2
+#fasttext test negative.bin negative_test_tokenized.csv
+fasttext supervised -input question_tokenized.csv -output question -lr 1.0 -epoch 25 -wordNgrams 2
+#fasttext test question.bin question_test_tokenized.csv
+fasttext supervised -input negative_tokenized.csv -output negative -lr 1.0 -epoch 25 -wordNgrams 2
+#fasttext test negative.bin negative_test_tokenized.csv
+fasttext supervised -input positive_tokenized.csv -output positive -lr 1.0 -epoch 25 -wordNgrams 2
+#fasttext test positive.bin positive_test_tokenized.csv 
 ```

@@ -103,6 +103,7 @@ def pre_process(message):
     result = " ".join(message.splitlines())
     translator = str.maketrans('', '', string.punctuation)
     result = result.translate(translator)
+    return result
 
 
 fieldnames = [

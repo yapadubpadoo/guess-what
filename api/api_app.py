@@ -3,6 +3,7 @@ import pprint
 import json
 import sys
 import os 
+import requests
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 import arrow
@@ -36,6 +37,19 @@ def format_data(data):
         'post_id': data['value']['post_id'],
     }
 
+def tokenize(text):
+    r = requests.post('http://34.227.142.85:3031/tokenize-text', data = {'text':text})
+    return r.json()['data']
+
+def text_classification(label, fasttext_test_data):
+    messages = subprocess.Popen(('echo', '"' + fasttext_test_data + '"'), stdout=subprocess.PIPE)
+    predicted_results = subprocess.check_output(
+        ('fasttext', 'predict', label +'.bin', '-'),
+        stdin=messages.stdout
+        )
+    result = predicted_results.decode('utf-8').replace('__label__', '').strip()
+    return result
+
 def handle_data(data):
     if data['field'] == 'feed' \
         and data['value']['item'] == 'comment'\
@@ -43,6 +57,24 @@ def handle_data(data):
         # it's a comment level, ticket one
         if data['value']['parent_id'] == data['value']['post_id']:
             ticket = format_data(data)
+            tokenized_text = tokenize(ticket.message)
+
+            if text_classification('complain', tokenized_text) == 'complain':
+                tag = 'complain'
+            elif text_classification('question', tokenized_text) == 'question':
+                tag = 'question'
+            else
+                tag = 'other'
+            ticket['tag'] = tag
+
+            if text_classification('negative', tokenized_text) == 'negative':
+                sentiment = 'negative'
+            elif text_classification('positive', tokenized_text) == 'positive':
+                sentiment = 'positive'
+            else
+                sentiment = 'other'
+            ticket['sentiment'] = sentiment
+
             try:
                 inserted_id = tickets_collection.insert_one(ticket).inserted_id 
                 print("[++] Ticket ID = {} has been created".format(inserted_id))
