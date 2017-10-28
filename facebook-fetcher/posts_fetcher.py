@@ -13,8 +13,10 @@ from pymongo.errors import DuplicateKeyError
 logger = log_helper.get_logger('facebook-posts-fetcher')
 
 QUEUE_EXCHANGE = "fb:posts"
-LOWER_POST_DATE = arrow.get('2017-08-31 17:00:00', 'YYYY-MM-DD HH:mm:ss')
-UPPER_POST_DATE = arrow.get('2017-10-01 17:00:00', 'YYYY-MM-DD HH:mm:ss')
+LOWER_POST_DATE = arrow.get('2017-06-30 17:00:00', 'YYYY-MM-DD HH:mm:ss')
+UPPER_POST_DATE = arrow.get('2017-08-31 17:00:00', 'YYYY-MM-DD HH:mm:ss')
+# LOWER_POST_DATE = arrow.get('2017-08-31 17:00:00', 'YYYY-MM-DD HH:mm:ss')
+# UPPER_POST_DATE = arrow.get('2017-10-01 17:00:00', 'YYYY-MM-DD HH:mm:ss')
 
 config = configparser.ConfigParser()
 config.read('config/production.ini')
