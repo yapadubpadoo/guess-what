@@ -23,7 +23,7 @@ Vue.component('case-item', {
   },
   computed: {
     post_time_moment: function () {
-      return moment(this.data.created_time, "YYYY-MM-DD hh:ii:ss").fromNow()
+      return moment(this.data.created_time, "YYYY-MM-DD hh:mm:ss").fromNow()
     }
   },
 })
