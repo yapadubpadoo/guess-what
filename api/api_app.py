@@ -61,19 +61,27 @@ def handle_data(data):
 
             if text_classification('complain', tokenized_text) == 'complain':
                 tag = 'complain'
+                tag_priority = 100
             elif text_classification('question', tokenized_text) == 'question':
                 tag = 'question'
+                tag_priority = 50
             else:
                 tag = 'other'
+                tag_priority = 1
             ticket['tag'] = tag
+            ticket['tag_priority'] = tag_priority
 
             if text_classification('negative', tokenized_text) == 'negative':
                 sentiment = 'negative'
+                sentiment_priority = 100
             elif text_classification('positive', tokenized_text) == 'positive':
                 sentiment = 'positive'
+                sentiment_priority = 50
             else:
                 sentiment = 'other'
+                sentiment_priority = 1
             ticket['sentiment'] = sentiment
+            ticket['sentiment_priority'] = sentiment_priority
 
             try:
                 inserted_id = tickets_collection.insert_one(ticket).inserted_id 
