@@ -79,11 +79,12 @@ def get_comments(graph, post_id):
         post_id, 
         len(response['data']))
     )
-    while len(response['data']) >= COMMENTS_LIMIT_PER_PAGE:
+    # pprint.pprint(response['paging'])
+    while len(response['data']) >= COMMENTS_LIMIT_PER_PAGE and 'next' in response['paging']:
         fb_logger.debug('    Get next after {}'.format(response['paging']['cursors']['after']))
         after = response['paging']['cursors']['after']
         response = graph.get_object(
-            id=post_id + '/reactions',
+            id=post_id + '/comments',
             fields=fields,
             after=after,
             limit=COMMENTS_LIMIT_PER_PAGE,
