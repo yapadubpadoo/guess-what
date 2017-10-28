@@ -2,16 +2,24 @@ body {
   height: 100vh;
   font-family: Helvetica, sans-serif;
   font-size: 13px;
-  color: #1d2129; }
+  color: #1d2129;
+  background-color: #efefef; }
 
 #left {
   height: 100vh;
   padding-top: 56px;
   border-right: 1px solid #ddd;
+  border-left: 1px solid #ddd;
   background: #efefef;
   padding-left: 0;
   padding-right: 0;
   overflow: auto; }
+  #left .header {
+    font-weight: bold;
+    text-align: center;
+    margin: 10px;
+    font-size: 2em;
+    border-bottom: 1px solid #ddd; }
   #left .case-item {
     border-bottom: 1px solid #ddd; }
     #left .case-item:hover {
@@ -23,8 +31,10 @@ body {
   height: 100vh;
   background: #fafafa;
   padding: 45px;
-  padding-top: 100px;
+  padding-top: 64px;
   overflow: auto; }
+  #right .button-wrapper {
+    text-align: right; }
 
 .case-wrapper {
   border: 1px solid #ddd;

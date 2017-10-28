@@ -65,8 +65,8 @@ var main = new Vue({
       picture: 'https://scontent.fbkk13-1.fna.fbcdn.net/v/t1.0-1/p200x200/14716270_1430563570305350_8075231906765003576_n.jpg?oh=c17e80ed0e6181b25d4cfe2e219316f9&oe=5A6C6529',
       name: 'TrueMove H',
     },
-    cases: [],
-    thread: []
+    cases: null,
+    thread: null
   },
   methods: {
     getThread: function (id) {

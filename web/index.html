@@ -20,7 +20,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
+        <!-- <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
           </li>
@@ -30,20 +30,24 @@
           <li class="nav-item">
             <a class="nav-link disabled" href="#">Disabled</a>
           </li>
-        </ul>
-        <form class="form-inline mt-2 mt-md-0">
+        </ul> -->
+        <!-- <form class="form-inline mt-2 mt-md-0">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        </form> -->
       </div>
     </nav>
-    <main role="main" class="container-fluid" id="main">
+    <main role="main" class="container" id="main">
       <div class="row">
         <div id="left" class="col-sm-5 col-md-4">
+          <div class="header">Cases</div>
           <case-item class="case-item" v-for="item in cases" v-bind:data="item" v-on:get-thread="getThread"></case-item>
         </div>
         <div id="right" class="col-sm-7 col-md-8">
-          <div class="case-wrapper">
+          <div class="button-wrapper mb-2">
+            <button type="button" class="btn btn-primary btn-sm" v-if="thread">Close</button>
+          </div>
+          <div class="case-wrapper" v-if="thread">
             <case-item class="case-item" v-for="item in thread" v-bind:data="item" v-bind:class="item.type"></case-item>
             <reply-item class="case-item reply-comment" v-bind:data="page"></reply-item>
           </div>

@@ -38,7 +38,7 @@ def format_data(data):
     }
 
 def tokenize(text):
-    r = requests.post('http://34.227.142.85:3031/tokenize-text', data = {'text':text})
+    r = requests.post('http://35.164.146.20:3031/tokenize-text', data = {'text':text})
     return r.json()['data']
 
 def text_classification(label, fasttext_test_data):
