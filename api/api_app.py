@@ -119,6 +119,7 @@ def get_tickets():
     tickets = tickets_collection.find({}).sort([('tag_priority', -1), ('sentiment_priority', -1), ('created_time', 1)])
     result = []
     for ticket in tickets:
+        ticket['created_time'] = arrow.get(ticket['created_time']).to('Asia/Bangkok').format('YYYY-MM-DD HH:mm:ss')
         result.append(ticket)
     return jsonify({"data": result})
 
