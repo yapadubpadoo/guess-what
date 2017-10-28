@@ -38,6 +38,7 @@ def format_data(data):
         'parent_id': data['value']['parent_id'] \
             if 'parent_id' in data['value'] else None,
         'post_id': data['value']['post_id'],
+        'sender_profile_picture': 'https://graph.facebook.com/' + data['value']['sender_id'] + '/picture?height=32',
     }
 
 def tokenize(text):
