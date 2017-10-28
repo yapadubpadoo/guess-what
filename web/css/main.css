@@ -17,7 +17,7 @@ body {
   #left .header {
     font-weight: bold;
     text-align: center;
-    margin: 10px;
+    padding: 5px 10px;
     font-size: 2em;
     border-bottom: 1px solid #ddd; }
   #left .case-item {
@@ -32,9 +32,15 @@ body {
   background: #fafafa;
   padding: 45px;
   padding-top: 64px;
+  border-right: 1px solid #ddd;
   overflow: auto; }
   #right .button-wrapper {
     text-align: right; }
+  #right .loading {
+    margin-top: 45px; }
+  #right textarea {
+    font-size: 13px;
+    resize: vertical; }
 
 .case-wrapper {
   border: 1px solid #ddd;
@@ -42,6 +48,8 @@ body {
 
 .case-item {
   padding: 15px; }
+  .case-item.active {
+    background-color: #fafafa; }
   .case-item img {
     max-width: 100%; }
   .case-item img.mr-3 {
@@ -64,5 +72,11 @@ body {
     font-weight: bold; }
   .case-item .time-from-now {
     color: #60646c; }
+  .case-item .badge.negative {
+    background: #f37777; }
+  .case-item .badge.positive {
+    background: #71b571; }
+  .case-item .badge.neutral {
+    background: #aaa; }
 
 /*# sourceMappingURL=main.css.map */

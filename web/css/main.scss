@@ -5,12 +5,13 @@ $hover-background-color: #fafafa;
 $border-color: #ddd;
 $primary-link-color: #365899;
 $secondary-link-color: #60646c;
+$default-font-size: 13px;
 
 body {
   height: 100vh;
   // padding-top: 56px;
   font-family: $font;
-  font-size: 13px;
+  font-size: $default-font-size;
   color: #1d2129;
   background-color: $primary-background-color;
 }
@@ -24,7 +25,7 @@ body {
   .header {
     font-weight: bold;
     text-align: center;
-    margin: 10px;
+    padding: 5px 10px;
     font-size: 2em;
     border-bottom: 1px solid $border-color;
   }
@@ -46,10 +47,18 @@ body {
   background: $main-background-color;
   padding: 45px;
   padding-top: 64px;
+  border-right: 1px solid $border-color;
   overflow: auto;
   .button-wrapper {
     text-align: right;
 
+  }
+  .loading {
+    margin-top: 45px;
+  }
+  textarea {
+    font-size: $default-font-size;
+    resize: vertical;
   }
 }
 
@@ -60,6 +69,9 @@ body {
 
 .case-item {
   padding: 15px;
+  &.active {
+    background-color: $main-background-color;
+  }
   img {
     max-width: 100%;
   }
@@ -89,5 +101,14 @@ body {
   }
   .time-from-now {
     color: $secondary-link-color;
+  }
+  .badge.negative {
+    background: #f37777;
+  }
+  .badge.positive {
+    background: #71b571;
+  }
+  .badge.neutral {
+    background: #aaa;
   }
 }
