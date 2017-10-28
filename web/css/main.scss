@@ -29,6 +29,7 @@ body {
   }
   padding-left: 0;
   padding-right: 0;
+  overflow: auto;
 }
 
 #right {
@@ -36,6 +37,7 @@ body {
   background: $main-background-color;
   padding: 45px;
   padding-top: 100px;
+  overflow: auto;
 }
 
 .case-wrapper {
@@ -51,6 +53,7 @@ body {
   img.mr-3 {
     width: 32px;
     border-radius: 32px;
+    background: gray;
   }
   &.post {
     background-color: white;
@@ -63,18 +66,15 @@ body {
     margin-left: 50px;
     padding-top: 5px;
     padding-bottom: 5px;
-    /*border-left: 2px solid $border-color;*/
   }
   .tag {
     margin-right: 0.5em;
   }
-}
-
-.author {
-  color: $primary-link-color;
-  font-weight: bold;
-}
-
-.time-from-now {
-  color: $secondary-link-color;
+  .author {
+    color: $primary-link-color;
+    font-weight: bold;
+  }
+  .time-from-now {
+    color: $secondary-link-color;
+  }
 }
