@@ -15,7 +15,7 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('config/production.ini')
-mongo_client = MongoClient(config['mongodb']['uri'])
+mongo_client = MongoClient(config['mongodb']['uri'], connect=False)
 tickets_collection = mongo_client.guess_what_facebook.tickets
 ticket_parent_collection = mongo_client.guess_what_facebook.ticket_parent
 ticket_children_collection = mongo_client.guess_what_facebook.ticket_children
