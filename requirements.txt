@@ -15,6 +15,7 @@ pika
 pymongo
 python-dateutil
 pytz
+redis
 requests
 scikit-learn
 scipy
