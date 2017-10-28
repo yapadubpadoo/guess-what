@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, session, request
+from flask import Flask, redirect, url_for, session, request, jsonify
 import pprint
 import json
 import sys
@@ -86,7 +86,19 @@ def fb_realtime_updates():
 def get_ticket(_id):
     thread = []
     ticket = tickets_collection.find_one({"_id":_id})
-    return ticket
+    parent = ticket_parent_collection.find_one({"_id": ticket['parent_id']})
+    parent['type'] = 'post'
+    parent['created_time'] = arrow.get(parent['created_time']).to('Asia/Bangkok').format('YYYY-MM-DD HH:mm:ss')
+    ticket['type'] = 'comment'
+    ticket['created_time'] = arrow.get(ticket['created_time']).to('Asia/Bangkok').format('YYYY-MM-DD HH:mm:ss')
+    thread.append(parent)
+    thread.append(ticket)
+    children = ticket_children_collection.find({"parent_id": ticket['_id']})
+    for child in children:
+        child['type'] = 'reply-comment'
+        child['created_time'] = arrow.get(child['created_time']).to('Asia/Bangkok').format('YYYY-MM-DD HH:mm:ss')
+        thread.append(child)
+    return jsonify({"data": thread})
 
 if __name__ == '__main__':
     app.run()
