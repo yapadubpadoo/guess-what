@@ -60,7 +60,7 @@ var app = new Vue({
       this.active_case_id = id
       this.main_is_loading = true
       this.thread = null
-      this.$http.get('http://52.38.76.110:6031/ticket/'+id).then((response) => {
+      this.$http.get('http://35.163.91.157:6031/ticket/'+id).then((response) => {
         this.thread = response.body.data
         this.main_is_loading = false
       });
@@ -72,13 +72,13 @@ var app = new Vue({
     }
   },
   created: function () {
-    this.$http.get('http://52.38.76.110:6031/tickets').then((response) => {
+    this.$http.get('http://35.163.91.157:6031/tickets').then((response) => {
       this.cases = response.body.data
     });
   },
 })
 
-var socket = io.connect('ws://52.38.76.110:8890');
+var socket = io.connect('ws://35.163.91.157:8890');
 socket.on('new_case', function(data) {
   console.log(data)
   app.cases.push(data)
