@@ -63,7 +63,7 @@ def handle_data(data):
                 tag = 'complain'
             elif text_classification('question', tokenized_text) == 'question':
                 tag = 'question'
-            else
+            else:
                 tag = 'other'
             ticket['tag'] = tag
 
@@ -71,7 +71,7 @@ def handle_data(data):
                 sentiment = 'negative'
             elif text_classification('positive', tokenized_text) == 'positive':
                 sentiment = 'positive'
-            else
+            else:
                 sentiment = 'other'
             ticket['sentiment'] = sentiment
 
@@ -113,6 +113,14 @@ def fb_realtime_updates():
             for data in changes['changes']:
                 handle_data(data)
     return "OK"
+
+@app.route('/tickets', methods=['GET'])
+def get_tickets():
+    tickets = tickets_collection.find({}).sort([('tag_priority', -1), ('sentiment_priority', -1), ('created_time', 1)])
+    result = []
+    for ticket in tickets:
+        result.append(ticket)
+    return jsonify({"data": result})
 
 @app.route('/ticket/<_id>', methods=['GET'])
 def get_ticket(_id):
