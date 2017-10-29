@@ -21,15 +21,15 @@ Classify sentiment from user message/conversation
 Prioritized jobs/tasks based on business rules
 # How we built it
 ## Backend
-RESTful API using Flask (Python Flask)
-Training/testing dataset from Facebook (via API)
-MongoDB for a data storage
-Redis and Socket io for notification
-fastText
-Wokers servers hosted on AWS
+* RESTful API using Flask (Python Flask)
+* Training/testing dataset from Facebook (via API)
+* MongoDB for a data storage
+* Redis and Socket io for notification
+* fastText
+* Wokers servers hosted on AWS
 ## Web Frontend
-HTML
-Vue.js
+* HTML
+* Vue.js
 # Challenges we ran into
 Post data on Facebook is unstructured, plenty of noise and we've to carefully process and clean it
 We have to build a reliable system to repeat #1 process many times to get better models
